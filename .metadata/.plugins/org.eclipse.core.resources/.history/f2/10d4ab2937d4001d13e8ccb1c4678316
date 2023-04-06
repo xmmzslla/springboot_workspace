@@ -1,0 +1,44 @@
+package com.example.shop.security.jwt;
+
+import javax.naming.AuthenticationException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.catalina.User;
+import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties.Authentication;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import  com.fasterxml.jackson.databind.ObjectMapper;
+
+// Authentication(인증)
+public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
+
+	private AuthenticationManager authManager;
+	
+	public JWTAuthenticationFilter(AuthenticationManager authManager) {
+		this.authManager = authManager;
+	}
+	
+//	http://localhost:8090/login 요청을 하면 실행되는 함수
+	@Override
+	public Authentication attemptAuthentication(HttpServletRequest  request, HttpServletResponse response)
+	throws AuthenticationException{
+		System.out.println("JWTAuthenticationFilter => login 요청 처리를 시작함");
+		
+		try {
+		ObjectMapper om = new ObjectMapper();
+		User user = om.readValue(request.getInputStream(),User.class);
+		System.out.printf("memberEmail : %s, memberPass : %s\n", user.getMemberEmail(), user.getMemberPass());
+		
+		UsernamePasswordAuthenticationToken authenticationToken =
+				new UsernamePasswordAuthenticationToken(user.getMemberEmail(), user.getMemberPass());
+		
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return super.attemptAuthentication(request, response);
+	}
+}
+

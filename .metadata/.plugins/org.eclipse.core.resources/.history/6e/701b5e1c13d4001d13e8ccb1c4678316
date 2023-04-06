@@ -1,0 +1,88 @@
+package com.example.shop.members.service;
+
+import com.example.shop.members.dao.MembersDAO;
+
+
+
+import members.dto.AuthInfo;
+import members.dto.ChangePwdCommand;
+import members.dto.MembersDTO;
+
+public class MembersServiceImp implements MembersService {
+	
+	private MembersDAO membersDao;
+	
+	public MembersServiceImp() {
+		
+	}
+	
+	public void setMembersDao(MembersDAO membersDao) {
+		this.membersDao = membersDao;
+	}
+
+	@Override
+	public AuthInfo addMemberProcess(com.example.shop.members.dto.MembersDTO dto) {
+		//회원가입 후 로그인 처리
+		membersDao.insertMember(dto);
+		return new AuthInfo(dto.getMemberEmail(), dto.getMemberName(), dto.getMemberPass());
+	}
+
+	@Override
+	public AuthInfo loginProcess(MembersDTO dto) {
+		MembersDTO member = membersDao.selectByEmail(dto.getMemberEmail());
+		  //회원이 아니면
+		if(member == null) {
+			//System.out.println("회원이 아닙니다.");
+			throw new WrongEmailPasswordException();
+		}
+		
+		  //비밀번호가 일치하지 않으면
+		if(!member.matchPassword(dto.getMemberPass())) {
+			//System.out.println("비밀번호가 다릅니다.");
+			throw new WrongEmailPasswordException();
+		}
+		
+		return new AuthInfo(member.getMemberEmail(), member.getMemberName(), member.getMemberPass());
+	}
+
+	@Override
+	public MembersDTO updateMemberProcess(String memberEmail) {	
+		return membersDao.selectByEmail(memberEmail);
+	}
+
+	@Override
+	public AuthInfo updateMemberProcess(MembersDTO dto) {
+		//회원정보 수정 3 -> MembersController
+		membersDao.updateMember(dto);
+		MembersDTO member = membersDao.selectByEmail(dto.getMemberEmail());	
+		return new AuthInfo(member.getMemberEmail(), member.getMemberName(), member.getMemberPass());
+		
+	}
+
+	@Override
+	public void updatePassProcess(String memberEmail, ChangePwdCommand changePwd) {
+		//비밀번호 변경
+		MembersDTO member = membersDao.selectByEmail(memberEmail);
+		if(member ==null)
+			throw new WrongEmailPasswordException();
+		
+		member.changePassword(changePwd.getCurrentPassword(), changePwd.getNewPassword());
+		membersDao.updateByPass(member);
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

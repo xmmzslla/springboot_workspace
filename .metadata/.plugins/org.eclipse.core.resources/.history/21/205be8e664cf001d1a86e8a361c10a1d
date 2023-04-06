@@ -1,0 +1,7 @@
+package com.example.demo.dao;
+
+public interface TodoDAO {
+	
+	public List<TodoDTO> getTodoList() throws Exception;
+
+}

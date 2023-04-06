@@ -1,0 +1,8 @@
+package com.example.shop.security.jwt;
+
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+// Authentication(인증)
+public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
+
+}

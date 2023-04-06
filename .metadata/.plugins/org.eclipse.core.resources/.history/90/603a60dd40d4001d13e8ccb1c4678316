@@ -1,0 +1,26 @@
+package com.example.shop.security.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import com.example.shop.members.dao.MembersDAO;
+import com.example.shop.members.dto.MembersDTO;
+
+public class PrincipalDetailesService implements UserDetailsService{
+	
+	@Autowired
+	private MembersDAO membersDAO;
+
+	public PrincipalDetailesService() {
+		
+	}
+	
+	@Override
+	public UserDetails loadUserByUsername(String memberEmail) throws UsernameNotFoundException {
+		MembersDTO userEntity = membersDAO.selectByEmail(memberEmail);
+		
+		return null;
+	}
+}

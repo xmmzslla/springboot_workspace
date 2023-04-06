@@ -1,0 +1,8 @@
+package com.example.shop.members.dto;
+
+public class User {
+	private String memberEmail;
+	private String memberPass;
+
+	
+}

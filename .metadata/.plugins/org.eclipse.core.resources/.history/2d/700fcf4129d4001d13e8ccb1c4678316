@@ -1,0 +1,40 @@
+package com.example.shop.security.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+
+//한경설정용
+
+@Configuration
+@EnableWebSecurity //SpringSecurityFilterChain에 등록
+@EnableGlobalMethodSecurity(securedEnabled = true)
+public class SecurityConfig {
+	
+	@Bean
+	public BCryptPasswordEncoder encodePassword(){
+		return new BCryptPasswordEncoder();
+	}
+
+	@Bean
+	SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+		
+//		csrf() : Cross Site Request Forgery로 사이트간 위조 요청으로 정상적인 사용자가 의도치 않은 위조 요청을 보내는 것을 의미한다.
+		http.csrf().disable();
+//		API를 사용하므로 기본적으로 제공하는 formLogin()페이지 끄기
+		http.formLogin().disable();
+//		httpBasic 방식 대신 JMT를 사용하기 때문에 httpBasic() 끄기
+		http.httpBasic().disable();
+		
+//		세션 끄기
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+		return null;
+	}
+	
+}

@@ -1,0 +1,9 @@
+package com.example.shop.members.service;
+
+public class AuthInfo {
+
+	public AuthInfo(String memberEmail, String memberName, String memberPass) {
+		// TODO Auto-generated constructor stub
+	}
+
+}

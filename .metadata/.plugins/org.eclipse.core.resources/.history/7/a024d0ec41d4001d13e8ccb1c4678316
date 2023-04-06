@@ -1,0 +1,56 @@
+package com.example.shop.security.jwt;
+
+import java.io.IOException;
+import java.security.Principal;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.example.shop.members.dto.MembersDTO;
+import com.example.shop.members.dto.User;
+import com.example.shop.security.service.PrincipalDetails;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+//Authentication(인증)
+public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
+   private AuthenticationManager authManager;
+
+   public JwtAuthenticationFilter(AuthenticationManager authManager) {
+      this.authManager = authManager;
+   }
+
+   @Override
+   public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+         throws AuthenticationException {
+      System.out.println("JwtAuthenticationFilter => login 요청처리 시작");
+      
+      try {
+         ObjectMapper om = new ObjectMapper();
+         MembersDTO user = om.readValue(request.getInputStream(), MembersDTO.class);
+         System.out.printf("memberEmail : %s, memberPass : %s\n", user.getMemberEmail(), user.getMemberPass());
+         
+         //User에 저장된 내용으로 Token으로 만들어주기
+         UsernamePasswordAuthenticationToken authenticationToken =
+               new UsernamePasswordAuthenticationToken(user.getMemberEmail(), user.getMemberPass());
+         
+         Authentication authentication = authManager.authenticate(authenticationToken);
+         PrincipalDetails principalDetails = (PrincipalDetails)authentication.getPrincipal();
+         System.out.printf("로그인 완료됨(인증) : %s%s\n", principalDetails.getUsername(),principalDetails.getPassword());
+         
+      }catch (IOException e) {
+         e.printStackTrace();
+      }
+
+      return super.attemptAuthentication(request, response);
+   }//attemptAuthentication
+
+}//class
+

@@ -1,0 +1,10 @@
+package com.example.shop.security.config;
+
+import org.springframework.context.annotation.Configuration;
+
+//한경설정용
+
+@Configuration
+public class SecurityConfig {
+
+}

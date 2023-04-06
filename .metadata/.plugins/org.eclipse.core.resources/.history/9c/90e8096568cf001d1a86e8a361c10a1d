@@ -1,0 +1,6 @@
+package com.example.demo.service;
+
+public interface TodoService {
+	public List<TodoDTO> search() throws Exception;
+
+}

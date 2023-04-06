@@ -1,0 +1,7 @@
+package com.example.shop.security.config;
+
+//한경설정용
+
+public class SecurityConfig {
+
+}

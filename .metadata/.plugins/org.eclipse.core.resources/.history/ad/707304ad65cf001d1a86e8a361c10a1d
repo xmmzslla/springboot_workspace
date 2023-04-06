@@ -1,0 +1,16 @@
+#server
+server.port=8090
+
+#서버를 재시작
+spring.devtools.livereload.enabled=true
+spring.devtools.remote.restart.enabled=true
+
+#mybatis
+#매핑용 클래스가 위치한 경로
+mybatis.type-aliases-package=com.example.demo.dto
+
+#mapper xml 파일이 위치한 경로
+#mybatis.mapper-locations=/mapper/todoMapper.xml
+mybatis.mapper-locations=/mapper/*.xml
+
+#configuration xml 파일 위치한 경로

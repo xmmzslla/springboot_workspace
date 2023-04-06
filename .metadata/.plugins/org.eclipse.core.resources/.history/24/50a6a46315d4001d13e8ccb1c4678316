@@ -1,0 +1,10 @@
+package com.example.shop.members.service;
+
+public class ChangePwdCommand {
+
+	public String getCurrentPassword() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

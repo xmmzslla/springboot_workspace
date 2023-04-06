@@ -1,0 +1,18 @@
+package com.example.shop.security.service;
+
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.example.shop.members.dto.MembersDTO;
+
+public class PrincipalDetails implements UserDetails{
+
+	private MembersDTO membersDTO;
+	
+	public PrincipalDetails() {
+		
+	}
+	
+	public PrincipalDetails(MembersDTO membersDTO) {
+		this.membersDTO = membersDTO;
+	}
+}
