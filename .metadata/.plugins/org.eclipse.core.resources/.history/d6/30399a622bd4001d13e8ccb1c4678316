@@ -1,6 +1,0 @@
-package com.example.shop.security.jwt;
-
-// Authentication(인증)
-public class JWTAuthenticationFilter {
-
-}
